@@ -25,7 +25,10 @@ adj_close_df = pd.DataFrame()
 
 for ticker in tickers:
     data = yf.download(ticker, start=startDate, end=endDate)
-    adj_close_df[ticker] = data['Adj Close']
+    if not data.empty:
+        adj_close_df[ticker] = data['Adj Close']
+    else:
+        print(f"No data for {ticker}, skipping.")
 
 # Lognormal Returns
 log_returns = np.log(adj_close_df / adj_close_df.shift(1))
